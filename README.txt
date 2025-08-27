@@ -1,114 +1,137 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://pixelcanopy.com/
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== FB Checkout URL Handler for WooCommerce ===
+Contributors: pixelcanopy
+Donate link: https://ko-fi.com/pixelcanopy
+Tags: facebook, woocommerce, checkout, commerce, ecommerce
+Requires at least: 5.0
+Tested up to: 6.3
+Requires PHP: 7.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+WC requires at least: 3.0
+WC tested up to: 8.0
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Handle Facebook Commerce Platform checkout URLs for WooCommerce. Because Facebook decided to make this unnecessarily complicated for all WooCommerce store owners!
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+This plugin handles Facebook Commerce Platform checkout URLs so your customers can seamlessly purchase from Facebook ads and shops. Because apparently Facebook decided to make this unnecessarily complicated for all WooCommerce store owners! 🙄
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+When Facebook discontinued on-platform checkout, they introduced a new system where customers are redirected to your website with product information in the URL. This plugin automatically processes those URLs, adds the products to the customer's WooCommerce cart, and redirects them to either the cart or checkout page.
 
-A few notes about the sections above:
+**Key Features:**
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+* **Automatic Product Addition** - Parses Facebook checkout URLs and adds products to WooCommerce cart
+* **Multiple Product Support** - Handle multiple products with quantities: `products=123:2,456:1`
+* **Coupon Support** - Automatically apply coupons from Facebook URLs
+* **Flexible Product Matching** - Matches products by WooCommerce ID, SKU, or custom Facebook Content ID
+* **Cart Management** - Option to clear cart before adding Facebook products
+* **Redirect Control** - Choose to redirect customers to cart or checkout page
+* **Error Handling** - Comprehensive validation and user-friendly error messages
+* **Debug Mode** - Optional logging for troubleshooting
+* **Easy Setup** - Simple configuration with clear instructions
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+**How It Works:**
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+1. Customer clicks "Buy Now" on Facebook
+2. Facebook redirects to your site: `yoursite.com/facebook-checkout?products=123:2&coupon=SAVE10`
+3. Plugin processes the URL and adds products to cart
+4. Customer is redirected to cart or checkout page
+5. Customer completes purchase on your site
+
+**Product ID Matching:**
+
+The plugin tries to match Facebook product IDs in this order:
+1. WooCommerce Product ID
+2. Product SKU
+3. Custom field "facebook_content_id" (for different IDs)
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+1. Upload the plugin files to `/wp-content/plugins/` directory, or install through WordPress admin
+2. Ensure WooCommerce is installed and activated
+3. Activate the plugin through the 'Plugins' menu in WordPress
+4. Go to Settings → FB Checkout Handler to configure the plugin
+5. Copy your checkout URL and paste it in Facebook Commerce Manager
 
-e.g.
+**Facebook Commerce Manager Setup:**
 
-1. Upload `i-hate-fb-so-much.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Go to Facebook Commerce Manager
+2. Navigate to Commerce → Settings → Checkout
+3. Paste your checkout URL: `yoursite.com/facebook-checkout`
+4. Save settings and test
+
+**Important Notice**
+
+If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". Every. Single. Product. (Thanks, Zuck!) To add Facebook Content IDs to your products:
+
+**Method 1 - Individual Product Edit:**
+1. Go to Products → All Products
+2. Click "Edit" on any product
+3. Scroll to the "General" tab
+4. Look for the "Facebook Content ID" field
+5. Enter the Content ID from your Facebook Commerce Manager
+6. Update the product
+
+**Method 2 - Quick Edit (Faster for Multiple Products):**
+1. Go to Products → All Products
+2. Hover over any product and click "Quick Edit"
+3. Look for the "Facebook Content ID" field at the bottom
+4. Enter the Content ID and click "Update"
+
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Does this work with Facebook Shops? =
 
-An answer to that question.
+Yes! This plugin works with Facebook Shops, Instagram Shopping, and any Facebook Commerce Platform feature that uses checkout URLs.
 
-= What about foo bar? =
+= What if my Facebook product IDs don't match my WooCommerce product IDs? =
 
-Answer to foo bar dilemma.
+No problem! The plugin can match by SKU or you can use the custom "Facebook Content ID" field on each product to specify the exact ID Facebook will send.
 
-== Screenshots ==
+= Can I redirect customers directly to checkout? =
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+Yes! In the plugin settings, you can choose to redirect customers to either the cart page (so they can review) or directly to the checkout page for a streamlined experience.
+
+= Will this work with my existing cart contents? =
+
+By default, the plugin clears the cart before adding Facebook products to avoid confusion. This can be disabled in settings if you prefer to add to existing cart contents.
+
+= What happens if a product is out of stock? =
+
+The plugin checks stock availability and will show an error message if a product is out of stock, rather than adding it to the cart.
+
+= Does this support variable products? =
+
+The plugin works with simple products. Variable product support depends on how Facebook sends the variation information in the URL.
+
+= Can I debug issues? =
+
+Yes! Enable debug mode in the settings to log all Facebook checkout requests to your WordPress error log.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0.0 =
+* Initial release
+* Facebook Commerce Platform checkout URL handling
+* Multiple product support with quantities
+* Coupon code application
+* Product matching by ID, SKU, or custom field
+* Configurable cart clearing
+* Configurable redirect destination (cart or checkout)
+* Debug logging option
+* Admin interface for easy setup
+* Error handling and validation
+* WooCommerce integration
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+= 1.0.0 =
+Initial release. Install to handle Facebook Commerce Platform checkout URLs seamlessly.
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+== Support ==
 
-== Arbitrary section ==
+For support, please visit [pixelcanopy.com](https://pixelcanopy.com) or consider supporting development at [ko-fi.com/pixelcanopy](https://ko-fi.com/pixelcanopy).
 
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+**Important Note:** Make sure your Facebook product catalog uses the same IDs as your WooCommerce products (Product ID or SKU). Otherwise, products won't be found and customers will see errors. Check your Facebook Commerce Manager product Content ID fields to see what Facebook will send in the checkout URLs.

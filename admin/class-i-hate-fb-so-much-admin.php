@@ -124,6 +124,7 @@ class I_Hate_Fb_So_Much_Admin {
 		// Register settings
 		register_setting( 'i_hate_fb_so_much', 'i_hate_fb_so_much_debug_mode' );
 		register_setting( 'i_hate_fb_so_much', 'i_hate_fb_so_much_clear_cart_always' );
+		register_setting( 'i_hate_fb_so_much', 'i_hate_fb_so_much_redirect_to' );
 
 		// Add settings section
 		add_settings_section(
@@ -147,6 +148,15 @@ class I_Hate_Fb_So_Much_Admin {
 			'i_hate_fb_so_much_clear_cart_always',
 			__( 'Always Clear Cart', 'i-hate-fb-so-much' ),
 			array( $this, 'clear_cart_callback' ),
+			'i_hate_fb_so_much',
+			'i_hate_fb_so_much_settings_section'
+		);
+
+		// Redirect destination setting
+		add_settings_field(
+			'i_hate_fb_so_much_redirect_to',
+			__( 'Redirect Destination', 'i-hate-fb-so-much' ),
+			array( $this, 'redirect_to_callback' ),
 			'i_hate_fb_so_much',
 			'i_hate_fb_so_much_settings_section'
 		);
@@ -181,11 +191,11 @@ class I_Hate_Fb_So_Much_Admin {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-			
+
 			<?php if ( ! $wc_active ) : ?>
 				<div class="notice notice-error">
 					<p>
-						<strong><?php _e( 'WooCommerce Required!', 'i-hate-fb-so-much' ); ?></strong> 
+						<strong><?php _e( 'WooCommerce Required!', 'i-hate-fb-so-much' ); ?></strong>
 						<?php _e( 'This plugin requires WooCommerce to be installed and activated.', 'i-hate-fb-so-much' ); ?>
 					</p>
 				</div>
@@ -247,6 +257,22 @@ class I_Hate_Fb_So_Much_Admin {
 	}
 
 	/**
+	 * Redirect destination setting callback
+	 *
+	 * @since    1.0.0
+	 */
+	public function redirect_to_callback() {
+		$redirect_to = get_option( 'i_hate_fb_so_much_redirect_to', 'cart' );
+		?>
+		<select id="i_hate_fb_so_much_redirect_to" name="i_hate_fb_so_much_redirect_to">
+			<option value="cart" <?php selected( $redirect_to, 'cart' ); ?>><?php _e( 'Cart Page', 'i-hate-fb-so-much' ); ?></option>
+			<option value="checkout" <?php selected( $redirect_to, 'checkout' ); ?>><?php _e( 'Checkout Page', 'i-hate-fb-so-much' ); ?></option>
+		</select>
+		<p class="description"><?php _e( 'Choose where to redirect customers after adding Facebook products to their cart. Cart page lets them review/modify, checkout page streamlines the purchase process.', 'i-hate-fb-so-much' ); ?></p>
+		<?php
+	}
+
+	/**
 	 * Checkout URL display callback
 	 *
 	 * @since    1.0.0
@@ -277,26 +303,22 @@ class I_Hate_Fb_So_Much_Admin {
 				<li><?php _e( 'Go to your Facebook Commerce Manager', 'i-hate-fb-so-much' ); ?></li>
 				<li><?php _e( 'Navigate to Commerce → Settings → Checkout', 'i-hate-fb-so-much' ); ?></li>
 				<li><?php _e( 'Paste the URL in the "Checkout URL" field', 'i-hate-fb-so-much' ); ?></li>
-				<li><?php _e( 'Save your settings', 'i-hate-fb-so-much' ); ?></li>
+				<li><?php _e( 'Save your settings and test to make sure it works', 'i-hate-fb-so-much' ); ?></li>
 			</ol>
-			
+
 			<h4><?php _e( 'How It Works:', 'i-hate-fb-so-much' ); ?></h4>
 			<p><?php _e( 'When customers click "Buy Now" on Facebook, they\'ll be redirected to your site with the products automatically added to their cart. Facebook will append parameters like:', 'i-hate-fb-so-much' ); ?></p>
 			<code><?php echo esc_url( $checkout_url ); ?>?products=123:2,456:1&coupon=SAVE10</code>
 			<p><small><?php _e( 'This example adds product ID 123 (quantity 2) and product ID 456 (quantity 1) to the cart, then applies coupon "SAVE10".', 'i-hate-fb-so-much' ); ?></small></p>
-			
+
 			<h4><?php _e( 'Product ID Matching:', 'i-hate-fb-so-much' ); ?></h4>
 			<p><?php _e( 'The plugin will try to match Facebook product IDs in this order:', 'i-hate-fb-so-much' ); ?></p>
 			<ul>
-				<li><?php _e( 'WooCommerce Product ID (most common)', 'i-hate-fb-so-much' ); ?></li>
+				<li><?php _e( 'WooCommerce Product ID', 'i-hate-fb-so-much' ); ?></li>
 				<li><?php _e( 'Product SKU', 'i-hate-fb-so-much' ); ?></li>
 				<li><?php _e( 'Custom field "facebook_content_id" (if you use different IDs)', 'i-hate-fb-so-much' ); ?></li>
 			</ul>
-			
-			<div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; margin-top: 15px; border-radius: 4px;">
-				<strong><?php _e( 'Important:', 'i-hate-fb-so-much' ); ?></strong> 
-				<?php _e( 'Make sure your Facebook product catalog uses the same IDs as your WooCommerce products (either Product ID or SKU). Otherwise, products won\'t be found and customers will see errors.', 'i-hate-fb-so-much' ); ?>
-			</div>
+			<p><?php _e( "You'll have to check your Facebook Commerce Manager products to see for sure what Facebook will send in the URL. As of now (Aug 2025) they will use whatever is in the Content ID field. This may be the same as your WooCommerce product id's, or your SKU's, or it may be a random id Facebook created depending on your Commerce Manager settings.", 'i-hate-fb-so-much' ); ?></p>
 		</div>
 
 		<style>
@@ -322,9 +344,9 @@ class I_Hate_Fb_So_Much_Admin {
 	 */
 	public function add_facebook_content_id_field() {
 	    global $post;
-	    
+
 	    echo '<div class="options_group">';
-	    
+
 	    woocommerce_wp_text_input( array(
 	        'id'            => 'facebook_content_id',
 	        'label'         => __( 'Facebook Content ID', 'i-hate-fb-so-much' ),
@@ -333,7 +355,7 @@ class I_Hate_Fb_So_Much_Admin {
 	        'description'   => __( 'The Content ID from Facebook Commerce Manager. Required for Facebook checkout to work with this product.', 'i-hate-fb-so-much' ),
 	        'value'         => get_post_meta( $post->ID, 'facebook_content_id', true )
 	    ) );
-	    
+
 	    echo '</div>';
 	}
 
@@ -390,7 +412,7 @@ class I_Hate_Fb_So_Much_Admin {
 	            </span>
 	        </label>
 	    </div>
-	    
+
 	    <script type="text/javascript">
 	    jQuery(document).ready(function($) {
 	        // Populate quick edit field with existing value
@@ -398,14 +420,14 @@ class I_Hate_Fb_So_Much_Admin {
 	            var $row = $(this).closest('tr');
 	            var $editRow = $row.next('tr.inline-edit-row');
 	            var facebookId = $row.find('.column-facebook_content_id span').text().trim();
-	            
+
 	            if (facebookId && facebookId !== '—') {
 	                $editRow.find('input[name="facebook_content_id"]').val(facebookId);
 	            }
 	        });
 	    });
 	    </script>
-	    
+
 	    <style>
 	    .inline-edit-group .inline-edit-status {
 	        width: 50%;

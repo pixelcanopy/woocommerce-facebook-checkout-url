@@ -186,8 +186,14 @@ class I_Hate_Fb_So_Much_Public {
         ) );
       }
 
-      // Redirect to checkout page
-      wp_redirect( wc_get_cart_url() );
+      // Redirect based on admin setting (cart or checkout)
+      $redirect_to = get_option( 'i_hate_fb_so_much_redirect_to', 'cart' );
+      
+      if ( $redirect_to === 'checkout' ) {
+        wp_redirect( wc_get_checkout_url() );
+      } else {
+        wp_redirect( wc_get_cart_url() );
+      }
       exit;
 
     } catch ( Exception $e ) {

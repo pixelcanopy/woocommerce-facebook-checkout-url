@@ -1,0 +1,35 @@
+# WordPress Plugin .gitignore
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Development files
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+# Node.js (if using build tools)
+node_modules/
+npm-debug.log*
+
+# Composer (if using)
+/vendor/
+
+# Build output
+/build/
+/dist/
+
+# Backup files
+*.bak
+*.backup

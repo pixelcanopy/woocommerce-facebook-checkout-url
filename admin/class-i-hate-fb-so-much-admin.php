@@ -390,8 +390,8 @@ class I_Hate_Fb_So_Much_Admin {
 	    ?>
 	    <br class="clear" />
 	    <div class="inline-edit-group">
-	        <label class="inline-edit-status alignleft">
-	            <span class="title"><?php _e( 'Facebook Content ID', 'i-hate-fb-so-much' ); ?></span>
+	        <label class="inline-edit-status alignleft fb-content-id-quickedit-label">
+	            <span class="title fb-content-id-quickedit-title"><?php _e( 'Facebook Content ID', 'i-hate-fb-so-much' ); ?></span>
 	            <span class="input-text-wrap">
 	                <input type="text" name="facebook_content_id" class="text" placeholder="<?php _e( 'Facebook Content ID', 'i-hate-fb-so-much' ); ?>">
 	            </span>
@@ -416,7 +416,7 @@ class I_Hate_Fb_So_Much_Admin {
 	                    setTimeout(function() {
 	                        var editRow = $('tr#edit-'+postId);
 	                        var input = editRow.find('input[name="facebook_content_id"]');
-	                        
+	                        input.attr('placeholder', '');
 	                        // Clear loading state and set value
 	                        input.removeClass('fb-loading').val(response.data || '');
 	                    }, 100);
@@ -444,11 +444,20 @@ class I_Hate_Fb_So_Much_Admin {
 	        margin-bottom: 5px;
 	        font-weight: 600;
 	    }
+	    .inline-edit-group .inline-edit-status .fb-content-id-quickedit-title {
+	    	min-width: 130px;
+	    }
+	    .inline-edit-row fieldset label.fb-content-id-quickedit-label span.input-text-wrap {
+	    	margin-left: 0;
+	    }
 	    .inline-edit-group .input-text-wrap {
 	        display: block;
 	    }
 	    .inline-edit-group .input-text-wrap input {
 	        width: 100%;
+	    }
+	    .inline-edit-group .input-text-wrap input[name="facebook_content_id"] {
+	    	min-width: 200px;
 	    }
 	    
 	    /* Loading state for Facebook Content ID field */
@@ -457,6 +466,7 @@ class I_Hate_Fb_So_Much_Admin {
 	        background-size: 200% 100% !important;
 	        animation: fb-loading 1.2s ease-in-out infinite !important;
 	        color: #999 !important;
+	        width: 200px;
 	    }
 	    
 	    @keyframes fb-loading {

@@ -415,10 +415,20 @@ class I_Hate_Fb_So_Much_Admin {
 	                    // Wait for edit row to be created, then populate
 	                    setTimeout(function() {
 	                        var editRow = $('tr#edit-'+postId);
-	                        editRow.find('input[name="facebook_content_id"]').val(response.data || '');
+	                        var input = editRow.find('input[name="facebook_content_id"]');
+	                        
+	                        // Clear loading state and set value
+	                        input.removeClass('fb-loading').val(response.data || '');
 	                    }, 100);
 	                }
 	            });
+	            
+	            // Add loading state to input after quick edit opens
+	            setTimeout(function() {
+	                var editRow = $('tr#edit-'+postId);
+	                var input = editRow.find('input[name="facebook_content_id"]');
+	                input.addClass('fb-loading').attr('placeholder', 'Loading Facebook ID...');
+	            }, 50);
 	        });
 	    });
 	    </script>
@@ -439,6 +449,19 @@ class I_Hate_Fb_So_Much_Admin {
 	    }
 	    .inline-edit-group .input-text-wrap input {
 	        width: 100%;
+	    }
+	    
+	    /* Loading state for Facebook Content ID field */
+	    input.fb-loading {
+	        background: linear-gradient(90deg, #f0f0f1 25%, #e0e0e1 50%, #f0f0f1 75%) !important;
+	        background-size: 200% 100% !important;
+	        animation: fb-loading 1.2s ease-in-out infinite !important;
+	        color: #999 !important;
+	    }
+	    
+	    @keyframes fb-loading {
+	        0% { background-position: -200% 0; }
+	        100% { background-position: 200% 0; }
 	    }
 	    </style>
 	    <?php

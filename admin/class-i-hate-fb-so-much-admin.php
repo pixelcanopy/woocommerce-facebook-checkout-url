@@ -405,9 +405,9 @@ class I_Hate_Fb_So_Much_Admin {
 	    if ( $column === 'facebook_content_id' ) {
 	        $facebook_id = get_post_meta( $post_id, 'facebook_content_id', true );
 	        if ( $facebook_id ) {
-	            echo '<span style="font-family: monospace; background: #f0f0f1; padding: 2px 6px; border-radius: 3px;">' . esc_html( $facebook_id ) . '</span>';
+	            echo '<span data-facebook-id="' . esc_attr( $facebook_id ) . '" style="font-family: monospace; background: #f0f0f1; padding: 2px 6px; border-radius: 3px;">' . esc_html( $facebook_id ) . '</span>';
 	        } else {
-	            echo '<span style="color: #d63638;">—</span>';
+	            echo '<span data-facebook-id="" style="color: #d63638;">—</span>';
 	        }
 	    }
 	}
@@ -433,9 +433,15 @@ class I_Hate_Fb_So_Much_Admin {
 	        $('#the-list').on('click', '.editinline', function() {
 	            var $row = $(this).closest('tr');
 	            var $editRow = $row.next('tr.inline-edit-row');
-	            var facebookId = $row.find('.column-facebook_content_id span').text().trim();
+	            
+	            // Get Facebook ID from data attribute for more reliability
+	            var facebookId = $row.find('.column-facebook_content_id span').data('facebook-id');
 
-	            if (facebookId && facebookId !== '—') {
+	            // Clear the field first
+	            $editRow.find('input[name="facebook_content_id"]').val('');
+
+	            // Only populate if we have a valid Facebook ID
+	            if (facebookId && facebookId.trim() !== '') {
 	                $editRow.find('input[name="facebook_content_id"]').val(facebookId);
 	            }
 	        });

@@ -67,7 +67,7 @@ If Facebook is passing random Content ID's in the url, you will have to MANUALLY
 **Method 1 - Individual Product Edit:**
 1. On your site dashboard, go to Products → All Products
 2. Click "Edit" on any product
-3. Scroll to the "General" tab
+3. Scroll to the "Custom Fields" section. You may have to enable this section in the Screen Options tab.
 4. Look for the "Facebook Content ID" field
 5. Enter the Content ID from your Facebook Commerce Manager
 6. Update the product

@@ -163,14 +163,27 @@ class I_Hate_Fb_So_Much_Public {
 
       // Process products parameter
       if ( isset( $_GET['products'] ) && ! empty( $_GET['products'] ) ) {
-        $products_param = urldecode( $_GET['products'] );
-        $this->add_products_to_cart( $products_param, $errors, $success_count );
+        $products_param = sanitize_text_field( $_GET['products'] );
+        
+        // Security: Add length limit to prevent abuse
+        if ( strlen( $products_param ) > 2000 ) {
+          $errors[] = __( 'Products parameter is too long', 'i-hate-fb-so-much' );
+        } else {
+          $products_param = urldecode( $products_param );
+          $this->add_products_to_cart( $products_param, $errors, $success_count );
+        }
       }
 
       // Process coupon parameter
       if ( isset( $_GET['coupon'] ) && ! empty( $_GET['coupon'] ) ) {
         $coupon_code = sanitize_text_field( $_GET['coupon'] );
-        $this->apply_coupon( $coupon_code, $errors );
+        
+        // Security: Add length limit for coupon codes
+        if ( strlen( $coupon_code ) > 50 ) {
+          $errors[] = __( 'Coupon code is too long', 'i-hate-fb-so-much' );
+        } else {
+          $this->apply_coupon( $coupon_code, $errors );
+        }
       }
 
       // Store any errors/messages in session for display
@@ -212,10 +225,22 @@ class I_Hate_Fb_So_Much_Public {
    * @param    int       $success_count    Reference to success counter
    */
   private function add_products_to_cart( $products_param, &$errors, &$success_count ) {
+    // Security: Additional validation on the products parameter
+    if ( ! preg_match( '/^[\w:,%-]+$/', $products_param ) ) {
+      $errors[] = __( 'Invalid characters in products parameter', 'i-hate-fb-so-much' );
+      return;
+    }
+    
     // Parse the products parameter: "id1:qty1,id2:qty2,id3:qty3"
     // Note: Facebook escapes commas as %2C and colons as %3A in the URL
     $products_param = str_replace( array( '%2C', '%3A' ), array( ',', ':' ), $products_param );
     $product_items = explode( ',', $products_param );
+    
+    // Security: Limit number of products to prevent abuse
+    if ( count( $product_items ) > 50 ) {
+      $errors[] = __( 'Too many products in request', 'i-hate-fb-so-much' );
+      return;
+    }
 
     foreach ( $product_items as $item ) {
       $item = trim( $item );
@@ -228,19 +253,29 @@ class I_Hate_Fb_So_Much_Public {
         $errors[] = sprintf(
           /* translators: %s: invalid product format */
           __( 'Invalid product format: %s', 'i-hate-fb-so-much' ), 
-          $item 
+          esc_html( $item )
         );
         continue;
       }
 
       $product_id = sanitize_text_field( $parts[0] );
       $quantity = intval( $parts[1] );
+      
+      // Security: Additional validation
+      if ( empty( $product_id ) || ! preg_match( '/^[\w-]+$/', $product_id ) ) {
+        $errors[] = sprintf(
+          /* translators: %s: product ID */
+          __( 'Invalid product ID: %s', 'i-hate-fb-so-much' ), 
+          esc_html( $product_id )
+        );
+        continue;
+      }
 
-      if ( $quantity <= 0 ) {
+      if ( $quantity <= 0 || $quantity > 999 ) {
         $errors[] = sprintf(
           /* translators: %s: product ID */
           __( 'Invalid quantity for product %s', 'i-hate-fb-so-much' ), 
-          $product_id 
+          esc_html( $product_id )
         );
         continue;
       }
@@ -252,7 +287,7 @@ class I_Hate_Fb_So_Much_Public {
         $errors[] = sprintf(
           /* translators: %s: product ID */
           __( 'Product not found: %s', 'i-hate-fb-so-much' ), 
-          $product_id 
+          esc_html( $product_id )
         );
         continue;
       }
@@ -262,7 +297,7 @@ class I_Hate_Fb_So_Much_Public {
         $errors[] = sprintf(
           /* translators: %s: product name */
           __( 'Product is not available for purchase: %s', 'i-hate-fb-so-much' ), 
-          $product->get_name() 
+          esc_html( $product->get_name() )
         );
         continue;
       }
@@ -272,7 +307,7 @@ class I_Hate_Fb_So_Much_Public {
         $errors[] = sprintf(
           /* translators: %s: product name */
           __( 'Not enough stock for product: %s', 'i-hate-fb-so-much' ), 
-          $product->get_name() 
+          esc_html( $product->get_name() )
         );
         continue;
       }
@@ -286,7 +321,7 @@ class I_Hate_Fb_So_Much_Public {
         $errors[] = sprintf(
           /* translators: %s: product name */
           __( 'Failed to add product to cart: %s', 'i-hate-fb-so-much' ), 
-          $product->get_name() 
+          esc_html( $product->get_name() )
         );
       }
     }

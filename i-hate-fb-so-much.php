@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       FB Checkout URL Handler for Woocommerce
  * Plugin URI:        https://github.com/pixelcanopy/woocommerce-facebook-checkout-url/tree/main
- * Description:       This is a simple plugin that handles checkout url's from Facebooks SUPER AWESOME BRAND SPANKING SHINY AND NEW MIDDLE FINGER TO ALL WOOCOMMERCE SHOP OWNERS!!! (aka, the new checkout url stuff). See the settings page for details.
+ * Description:       This is a simple plugin that handles checkout url's from Facebooks SUPER AWESOME SHINY AND NEW MIDDLE FINGER TO ALL WOOCOMMERCE SHOP OWNERS!!! (aka, the new checkout url stuff). See the settings page for installation details.
  * Version:           1.0.0
  * Author:            Pixel Canopy
  * Author URI:        https://pixelcanopy.com/

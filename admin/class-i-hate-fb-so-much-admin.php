@@ -363,10 +363,25 @@ class I_Hate_Fb_So_Much_Admin {
 	 * Save Facebook Content ID field from product edit screen
 	 */
 	public function save_facebook_content_id_field( $post_id ) {
-	    if ( isset( $_POST['facebook_content_id'] ) ) {
-	        $facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
-	        update_post_meta( $post_id, 'facebook_content_id', $facebook_content_id );
-	    }
+		// Security checks
+		if ( ! isset( $_POST['woocommerce_meta_nonce'] ) || ! wp_verify_nonce( $_POST['woocommerce_meta_nonce'], 'woocommerce_save_data' ) ) {
+			return;
+		}
+		
+		// Capability check
+		if ( ! current_user_can( 'edit_product', $post_id ) ) {
+			return;
+		}
+		
+		// Autosave check
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		
+		if ( isset( $_POST['facebook_content_id'] ) ) {
+			$facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
+			update_post_meta( $post_id, 'facebook_content_id', $facebook_content_id );
+		}
 	}
 
 	/**
@@ -453,14 +468,19 @@ class I_Hate_Fb_So_Much_Admin {
 	 * Save Facebook Content ID from quick edit
 	 */
 	public function save_facebook_content_id_quick_edit( $product ) {
-	    if ( isset( $_POST['facebook_content_id'] ) ) {
-	        $facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
-	        if ( ! empty( $facebook_content_id ) ) {
-	            update_post_meta( $product->get_id(), 'facebook_content_id', $facebook_content_id );
-	        } else {
-	            delete_post_meta( $product->get_id(), 'facebook_content_id' );
-	        }
-	    }
+		// Security check - WooCommerce handles nonce for quick edit
+		if ( ! current_user_can( 'edit_product', $product->get_id() ) ) {
+			return;
+		}
+		
+		if ( isset( $_POST['facebook_content_id'] ) ) {
+			$facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
+			if ( ! empty( $facebook_content_id ) ) {
+				update_post_meta( $product->get_id(), 'facebook_content_id', $facebook_content_id );
+			} else {
+				delete_post_meta( $product->get_id(), 'facebook_content_id' );
+			}
+		}
 	}
 
 }

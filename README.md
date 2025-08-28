@@ -1,23 +1,23 @@
-=== FB Checkout URL Handler for WooCommerce ===
-Contributors: pixelcanopy
-Donate link: https://ko-fi.com/pixelcanopy
-Tags: facebook, woocommerce, checkout, commerce, ecommerce
-Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.0
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WC requires at least: 3.0
-WC tested up to: 8.0
+# FB Checkout URL Handler for WooCommerce
+
+**Contributors:** pixelcanopy  
+**Donate link:** https://ko-fi.com/pixelcanopy  
+**Tags:** facebook, woocommerce, checkout, commerce, ecommerce  
+**Requires at least:** 5.0  
+**Tested up to:** 6.3  
+**Requires PHP:** 7.0  
+**Stable tag:** 1.0.0  
+**License:** GPLv2 or later  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
+**WC requires at least:** 3.0  
+**WC tested up to:** 8.0  
 
 Handle Facebook Commerce Platform checkout URLs for WooCommerce. Because Facebook decided to make this unnecessarily complicated for all WooCommerce store owners!
 
-
-== Disclaimer!!!! ==
+### Disclaimer!!!! ###
 This was somewhat hastily vibe-coded with AI, so there are probably some bugs, but it's tested and works for normal situations.
 
-== Description ==
+## Description
 
 This plugin handles Facebook Commerce Platform checkout URLs so your customers can seamlessly purchase from Facebook ads and shops. Because apparently Facebook decided to make this unnecessarily complicated for all WooCommerce store owners!
 
@@ -25,7 +25,7 @@ When Facebook discontinued on-platform checkout, they introduced a new system wh
 
 Why am I making this plugin and not Facebook themselves? Who knows?!?!? Maybe they ran out of money for developers. Maybe they hate you, me, and all of us (except Shopify users, those guys are cool. Works right out of the box for those guys). Anyway, who cares? This plugin will be totally irrelevant in... oh, probably 2027 when FB replaces the Commerce Manager entirely with the new Economy Manager plugin, where you'll create your own free economy, mediated by FB, but not checkout though, just shopping, but sometimes checkout, but only if the customer uses IG pay, but only for certain shops - documentation unclear. But your Commerce Manager will DEFINITELY BE DISABLED IF YOU DON"T UPGRADE TO THE NEW ECONOMY MANGER PLUS by building an altar on your coffee table, adorning it with a pair of Meta Glasses and praying to Zuck while wearing one of their VR headsets. I look forward to making a WooCommerce plugin for that.
 
-**Key Features:**
+### Key Features
 
 * **Automatic Product Addition** - Parses Facebook checkout URLs and adds products to WooCommerce cart
 * **Multiple Product Support** - Handle multiple products with quantities: `products=123:2,456:1`
@@ -37,7 +37,7 @@ Why am I making this plugin and not Facebook themselves? Who knows?!?!? Maybe th
 * **Debug Mode** - Optional logging for troubleshooting
 * **Easy Setup** - Simple configuration with clear instructions
 
-**How It Works:**
+### How It Works
 
 1. Customer clicks "Buy Now" on Facebook
 2. Facebook redirects to your site: `yoursite.com/facebook-checkout?products=123:2&coupon=SAVE10`
@@ -45,14 +45,14 @@ Why am I making this plugin and not Facebook themselves? Who knows?!?!? Maybe th
 4. Customer is redirected to cart or checkout page
 5. Customer completes purchase on your site
 
-**Product ID Matching:**
+### Product ID Matching
 
 The plugin tries to match Facebook product IDs in this order:
 1. WooCommerce Product ID
 2. Product SKU
 3. Custom field "facebook_content_id" (for different IDs)
 
-== Installation ==
+## Installation
 
 1. Upload the plugin files to `/wp-content/plugins/` directory, or install through WordPress admin
 2. Ensure WooCommerce is installed and activated
@@ -60,16 +60,16 @@ The plugin tries to match Facebook product IDs in this order:
 4. Go to Settings → FB Checkout Handler to configure the plugin
 5. Copy your checkout URL and paste it in Facebook Commerce Manager
 
-**Facebook Commerce Manager Setup:**
+### Facebook Commerce Manager Setup
 
 1. Go to Facebook Commerce Manager
 2. Navigate to Commerce → Settings → Checkout
 3. Paste your checkout URL: `yoursite.com/facebook-checkout`
 4. Save settings and test
 
-**Important Notice**
+### Important Notice
 
-If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". Every. Single. Product. (Thanks, Zuck!) To add Facebook Content IDs to your products:
+If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". To add Facebook Content IDs to your products:
 
 **Method 1 - Individual Product Edit:**
 1. Go to Products → All Products
@@ -85,40 +85,46 @@ If Facebook is passing random Content ID's in the url, you will have to MANUALLY
 3. Look for the "Facebook Content ID" field at the bottom
 4. Enter the Content ID and click "Update"
 
+**Method 3 - Use the Facebook ID Column:**
+1. The products list shows a "Facebook ID" column for easy reference
+2. You can see at a glance which products need Facebook Content IDs
+3. Products without IDs show a red dash (—)
 
-== Frequently Asked Questions ==
+Every. Single. Product.
 
-= Does this work with Facebook Shops? =
+## Frequently Asked Questions
+
+### Does this work with Facebook Shops?
 
 Yes! This plugin works with Facebook Shops, Instagram Shopping, and any Facebook Commerce Platform feature that uses checkout URLs.
 
-= What if my Facebook product IDs don't match my WooCommerce product IDs? =
+### What if my Facebook product IDs don't match my WooCommerce product IDs?
 
 No problem! The plugin can match by SKU or you can use the custom "Facebook Content ID" field on each product to specify the exact ID Facebook will send.
 
-= Can I redirect customers directly to checkout? =
+### Can I redirect customers directly to checkout?
 
 Yes! In the plugin settings, you can choose to redirect customers to either the cart page (so they can review) or directly to the checkout page for a streamlined experience.
 
-= Will this work with my existing cart contents? =
+### Will this work with my existing cart contents?
 
 By default, the plugin clears the cart before adding Facebook products to avoid confusion. This can be disabled in settings if you prefer to add to existing cart contents.
 
-= What happens if a product is out of stock? =
+### What happens if a product is out of stock?
 
 The plugin checks stock availability and will show an error message if a product is out of stock, rather than adding it to the cart.
 
-= Does this support variable products? =
+### Does this support variable products?
 
 The plugin works with simple products. Variable product support depends on how Facebook sends the variation information in the URL.
 
-= Can I debug issues? =
+### Can I debug issues?
 
 Yes! Enable debug mode in the settings to log all Facebook checkout requests to your WordPress error log.
 
-== Changelog ==
+## Changelog
 
-= 1.0.0 =
+### 1.0.0
 * Initial release
 * Facebook Commerce Platform checkout URL handling
 * Multiple product support with quantities
@@ -131,12 +137,12 @@ Yes! Enable debug mode in the settings to log all Facebook checkout requests to 
 * Error handling and validation
 * WooCommerce integration
 
-== Upgrade Notice ==
+## Upgrade Notice
 
-= 1.0.0 =
+### 1.0.0
 Initial release. Install to handle Facebook Commerce Platform checkout URLs seamlessly.
 
-== Support ==
+## Support
 
 For support, please visit [pixelcanopy.com](https://pixelcanopy.com) or consider supporting development at [ko-fi.com/pixelcanopy](https://ko-fi.com/pixelcanopy).
 

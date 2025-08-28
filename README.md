@@ -71,7 +71,7 @@ The plugin tries to match Facebook product IDs in this order:
 
 ### Important Notice
 
-If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". To add Facebook Content IDs to your products:
+If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". Every. Single. Product. (Thanks, Zuck!) To add Facebook Content IDs to your products:
 
 **Method 1 - Individual Product Edit:**
 1. Go to Products → All Products
@@ -86,13 +86,6 @@ If Facebook is passing random Content ID's in the url, you will have to MANUALLY
 2. Hover over any product and click "Quick Edit"
 3. Look for the "Facebook Content ID" field at the bottom
 4. Enter the Content ID and click "Update"
-
-**Method 3 - Use the Facebook ID Column:**
-1. The products list shows a "Facebook ID" column for easy reference
-2. You can see at a glance which products need Facebook Content IDs
-3. Products without IDs show a red dash (—)
-
-Every. Single. Product.
 
 ## Frequently Asked Questions
 
@@ -142,7 +135,7 @@ Yes! Enable debug mode in the settings to log all Facebook checkout requests to 
 ## Upgrade Notice
 
 ### 1.0.0
-Initial release. Install to handle Facebook Commerce Platform checkout URLs seamlessly.
+Initial release. Install to handle Facebook Commerce Platform checkout URLs.
 
 ## Support
 

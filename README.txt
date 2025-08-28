@@ -136,7 +136,7 @@ Yes! Enable debug mode in the settings to log all Facebook checkout requests to 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release. Install to handle Facebook Commerce Platform checkout URLs seamlessly.
+Initial release. Install to handle Facebook Commerce Platform checkout URLs.
 
 == Support ==
 

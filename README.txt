@@ -27,18 +27,6 @@ When Facebook discontinued on-platform checkout, they introduced a new system wh
 
 Why am I making this plugin and not Facebook themselves? Who knows?!?!? Maybe they ran out of money for developers. Maybe they hate you, me, and all of us (except Shopify users, those guys are cool. Works right out of the box for those guys). Anyway, who cares? This plugin will be totally irrelevant in... oh, probably 2027 when FB replaces the Commerce Manager entirely with the new Economy Manager plugin, where you'll create your own free economy, mediated by FB, but not checkout though, just shopping, but sometimes checkout, but only if the customer uses IG pay, but only for certain shops - documentation unclear. But your Commerce Manager will DEFINITELY BE DISABLED IF YOU DON"T UPGRADE TO THE NEW ECONOMY MANGER PLUS by building an altar on your coffee table, adorning it with a pair of Meta Glasses and praying to Zuck while wearing one of their VR headsets. I look forward to making a WooCommerce plugin for that.
 
-**Key Features:**
-
-* **Automatic Product Addition** - Parses Facebook checkout URLs and adds products to WooCommerce cart
-* **Multiple Product Support** - Handle multiple products with quantities: `products=123:2,456:1`
-* **Coupon Support** - Automatically apply coupons from Facebook URLs
-* **Flexible Product Matching** - Matches products by WooCommerce ID, SKU, or custom Facebook Content ID
-* **Cart Management** - Option to clear cart before adding Facebook products
-* **Redirect Control** - Choose to redirect customers to cart or checkout page
-* **Error Handling** - Comprehensive validation and user-friendly error messages
-* **Debug Mode** - Optional logging for troubleshooting
-* **Easy Setup** - Simple configuration with clear instructions
-
 **How It Works:**
 
 1. Customer clicks "Buy Now" on Facebook
@@ -71,10 +59,10 @@ The plugin tries to match Facebook product IDs in this order:
 
 **Important Notice**
 
-If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". Every. Single. Product. (Thanks, Zuck!) To add Facebook Content IDs to your products:
+If Facebook is passing random Content ID's in the url, you will have to MANUALLY UPDATE every single you product on your site with the custom field "facebook_content_id". (Thanks, Zuck!) To add Facebook Content IDs to your products:
 
 **Method 1 - Individual Product Edit:**
-1. Go to Products → All Products
+1. On your site dashboard, go to Products → All Products
 2. Click "Edit" on any product
 3. Scroll to the "General" tab
 4. Look for the "Facebook Content ID" field
@@ -82,7 +70,7 @@ If Facebook is passing random Content ID's in the url, you will have to MANUALLY
 6. Update the product
 
 **Method 2 - Quick Edit (Faster for Multiple Products):**
-1. Go to Products → All Products
+1. On your site dashboard, go to Products → All Products
 2. Hover over any product and click "Quick Edit"
 3. Look for the "Facebook Content ID" field at the bottom
 4. Enter the Content ID and click "Update"

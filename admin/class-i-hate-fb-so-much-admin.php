@@ -414,7 +414,7 @@ class I_Hate_Fb_So_Much_Admin {
 	                if (response.success) {
 	                    // Wait for edit row to be created, then populate
 	                    setTimeout(function() {
-	                        var editRow = row.next('tr.inline-edit-row');
+	                        var editRow = $('tr#edit-'+postId);
 	                        editRow.find('input[name="facebook_content_id"]').val(response.data || '');
 	                    }, 100);
 	                }

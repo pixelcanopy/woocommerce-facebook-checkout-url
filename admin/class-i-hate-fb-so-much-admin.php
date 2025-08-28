@@ -400,15 +400,25 @@ class I_Hate_Fb_So_Much_Admin {
 
 	    <script type="text/javascript">
 	    jQuery(document).ready(function($) {
-	        // Populate quick edit field with existing value
+	        // Populate quick edit field with existing value via AJAX
 	        $('#the-list').on('click', '.editinline', function() {
 	            var row = $(this).closest('tr');
-	            var facebookId = row.attr('data-facebook-content-id') || '';
-	            
-	            setTimeout(function() {
-	                var editRow = row.next('tr.inline-edit-row');
-	                editRow.find('input[name="facebook_content_id"]').val(facebookId);
-	            }, 100);
+	            var postId = row.attr('id').replace('post-', '');
+
+	            // Make AJAX call to get Facebook Content ID
+	            $.post(ajaxurl, {
+	                action: 'get_facebook_content_id',
+	                post_id: postId,
+	                nonce: '<?php echo wp_create_nonce("get_facebook_content_id"); ?>'
+	            }, function(response) {
+	                if (response.success) {
+	                    // Wait for edit row to be created, then populate
+	                    setTimeout(function() {
+	                        var editRow = row.next('tr.inline-edit-row');
+	                        editRow.find('input[name="facebook_content_id"]').val(response.data || '');
+	                    }, 100);
+	                }
+	            });
 	        });
 	    });
 	    </script>
@@ -435,29 +445,24 @@ class I_Hate_Fb_So_Much_Admin {
 	}
 
 	/**
-	 * Add Facebook Content ID as data attribute to product rows
+	 * AJAX handler to get Facebook Content ID for a product
 	 */
-	public function add_facebook_id_to_rows() {
-		// Only run on products list page
-		global $pagenow;
-		if ( $pagenow !== 'edit.php' || ! isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'product' ) {
-			return;
+	public function ajax_get_facebook_content_id() {
+		// Security check
+		if ( ! check_ajax_referer( 'get_facebook_content_id', 'nonce', false ) ) {
+			wp_send_json_error( 'Invalid nonce' );
 		}
-		
-		// Get all visible products on current page
-		global $wp_list_table;
-		if ( isset( $wp_list_table->items ) ) {
-			?>
-			<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				<?php foreach ( $wp_list_table->items as $post ) : ?>
-					<?php $facebook_id = get_post_meta( $post->ID, 'facebook_content_id', true ); ?>
-					$('#post-<?php echo $post->ID; ?>').attr('data-facebook-content-id', '<?php echo esc_js( $facebook_id ); ?>');
-				<?php endforeach; ?>
-			});
-			</script>
-			<?php
+
+		$post_id = intval( $_POST['post_id'] );
+
+		// Check if user can edit this product
+		if ( ! current_user_can( 'edit_product', $post_id ) ) {
+			wp_send_json_error( 'Permission denied' );
 		}
+
+		$facebook_id = get_post_meta( $post_id, 'facebook_content_id', true );
+
+		wp_send_json_success( $facebook_id );
 	}
 
 	/**

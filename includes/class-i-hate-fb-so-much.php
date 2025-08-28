@@ -165,7 +165,7 @@ class I_Hate_Fb_So_Much {
     $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'save_facebook_content_id_field' );
     $this->loader->add_action( 'woocommerce_product_quick_edit_end', $plugin_admin, 'add_facebook_content_id_quick_edit' );
     $this->loader->add_action( 'woocommerce_product_quick_edit_save', $plugin_admin, 'save_facebook_content_id_quick_edit' );
-    $this->loader->add_action( 'admin_footer', $plugin_admin, 'add_facebook_id_to_rows' );
+    $this->loader->add_action( 'wp_ajax_get_facebook_content_id', $plugin_admin, 'ajax_get_facebook_content_id' );
   }
 
   /**

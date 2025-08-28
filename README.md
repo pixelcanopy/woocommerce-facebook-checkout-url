@@ -16,6 +16,9 @@ If you find this plugin helpful, please consider [buying me a coffee](https://ko
 
 Handle Facebook Commerce Platform checkout URLs for WooCommerce. Because Facebook decided to make this unnecessarily complicated for all WooCommerce store owners!
 
+## To install, just download the zip file and upload it through the WP Add Plugin interface. ##
+
+
 ### Disclaimer!!!! ###
 This was somewhat hastily vibe-coded with AI, so there are probably some bugs, but it's tested and works for normal situations.
 

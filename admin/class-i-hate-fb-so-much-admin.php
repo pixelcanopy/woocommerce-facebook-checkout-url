@@ -384,35 +384,6 @@ class I_Hate_Fb_So_Much_Admin {
 	}
 
 	/**
-	 * Add column to products list to show Facebook Content ID
-	 */
-	public function add_facebook_content_id_column( $columns ) {
-	    // Insert after the product name column
-	    $new_columns = array();
-	    foreach ( $columns as $key => $column ) {
-	        $new_columns[ $key ] = $column;
-	        if ( $key === 'name' ) {
-	            $new_columns['facebook_content_id'] = __( 'Facebook ID', 'i-hate-fb-so-much' );
-	        }
-	    }
-	    return $new_columns;
-	}
-
-	/**
-	 * Display Facebook Content ID in the custom column
-	 */
-	public function display_facebook_content_id_column( $column, $post_id ) {
-	    if ( $column === 'facebook_content_id' ) {
-	        $facebook_id = get_post_meta( $post_id, 'facebook_content_id', true );
-	        if ( $facebook_id ) {
-	            echo '<span data-facebook-id="' . esc_attr( $facebook_id ) . '" style="font-family: monospace; background: #f0f0f1; padding: 2px 6px; border-radius: 3px;">' . esc_html( $facebook_id ) . '</span>';
-	        } else {
-	            echo '<span data-facebook-id="" style="color: #d63638;">—</span>';
-	        }
-	    }
-	}
-
-	/**
 	 * Add Facebook Content ID field to quick edit
 	 */
 	public function add_facebook_content_id_quick_edit() {
@@ -431,19 +402,13 @@ class I_Hate_Fb_So_Much_Admin {
 	    jQuery(document).ready(function($) {
 	        // Populate quick edit field with existing value
 	        $('#the-list').on('click', '.editinline', function() {
-	            var $row = $(this).closest('tr');
-	            var $editRow = $row.next('tr.inline-edit-row');
+	            var row = $(this).closest('tr');
+	            var facebookId = row.attr('data-facebook-content-id') || '';
 	            
-	            // Get Facebook ID from data attribute for more reliability
-	            var facebookId = $row.find('.column-facebook_content_id span').data('facebook-id');
-
-	            // Clear the field first
-	            $editRow.find('input[name="facebook_content_id"]').val('');
-
-	            // Only populate if we have a valid Facebook ID
-	            if (facebookId && facebookId.trim() !== '') {
-	                $editRow.find('input[name="facebook_content_id"]').val(facebookId);
-	            }
+	            setTimeout(function() {
+	                var editRow = row.next('tr.inline-edit-row');
+	                editRow.find('input[name="facebook_content_id"]').val(facebookId);
+	            }, 100);
 	        });
 	    });
 	    </script>
@@ -467,6 +432,32 @@ class I_Hate_Fb_So_Much_Admin {
 	    }
 	    </style>
 	    <?php
+	}
+
+	/**
+	 * Add Facebook Content ID as data attribute to product rows
+	 */
+	public function add_facebook_id_to_rows() {
+		// Only run on products list page
+		global $pagenow;
+		if ( $pagenow !== 'edit.php' || ! isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'product' ) {
+			return;
+		}
+		
+		// Get all visible products on current page
+		global $wp_list_table;
+		if ( isset( $wp_list_table->items ) ) {
+			?>
+			<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				<?php foreach ( $wp_list_table->items as $post ) : ?>
+					<?php $facebook_id = get_post_meta( $post->ID, 'facebook_content_id', true ); ?>
+					$('#post-<?php echo $post->ID; ?>').attr('data-facebook-content-id', '<?php echo esc_js( $facebook_id ); ?>');
+				<?php endforeach; ?>
+			});
+			</script>
+			<?php
+		}
 	}
 
 	/**

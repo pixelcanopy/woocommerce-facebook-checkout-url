@@ -200,10 +200,9 @@ class I_Hate_Fb_So_Much_Admin {
 					</p>
 				</div>
 			<?php else : ?>
-				<div class="notice notice-info">
+				<div class="notice notice-success">
 					<p>
-						<strong><?php _e( 'Facebook\'s "Awesome" New Checkout System', 'i-hate-fb-so-much' ); ?></strong><br>
-						<?php _e( 'This plugin handles Facebook Commerce Platform checkout URLs so your customers can seamlessly purchase from Facebook ads and shops. Because apparently Facebook decided to make this unnecessarily complicated for all WooCommerce store owners! 🙄', 'i-hate-fb-so-much' ); ?>
+						<?php _e( 'If you find this plugin helpful, please consider <a href="https://ko-fi.com/pixelcanopy" target="_blank">buying me a coffee</a>. If you need website help, please consider using Pixel Canopy. Get more info about our services at <a href="https://pixelcanopy.com" target="_blank">https://pixelcanopy.com</a>.', 'i-hate-fb-so-much' ); ?>
 					</p>
 				</div>
 			<?php endif; ?>
@@ -367,17 +366,17 @@ class I_Hate_Fb_So_Much_Admin {
 		if ( ! isset( $_POST['woocommerce_meta_nonce'] ) || ! wp_verify_nonce( $_POST['woocommerce_meta_nonce'], 'woocommerce_save_data' ) ) {
 			return;
 		}
-		
+
 		// Capability check
 		if ( ! current_user_can( 'edit_product', $post_id ) ) {
 			return;
 		}
-		
+
 		// Autosave check
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
-		
+
 		if ( isset( $_POST['facebook_content_id'] ) ) {
 			$facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
 			update_post_meta( $post_id, 'facebook_content_id', $facebook_content_id );
@@ -472,7 +471,7 @@ class I_Hate_Fb_So_Much_Admin {
 		if ( ! current_user_can( 'edit_product', $product->get_id() ) ) {
 			return;
 		}
-		
+
 		if ( isset( $_POST['facebook_content_id'] ) ) {
 			$facebook_content_id = sanitize_text_field( $_POST['facebook_content_id'] );
 			if ( ! empty( $facebook_content_id ) ) {
